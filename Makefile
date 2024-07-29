@@ -8,11 +8,14 @@ stop-rabbitmq:
 	kubectl delete service rabbitmq || true
 	kubectl delete service rabbitmq-canary-a || true
 	kubectl delete service rabbitmq-canary-b || true
+	kubectl delete service rabbitmq-featureflag || true
 	kubectl delete deployment rabbitmq || true
 	kubectl delete deployment rabbitmq-blue || true
 	kubectl delete deployment rabbitmq-green || true
 	kubectl delete deployment rabbitmq-canary-a || true
 	kubectl delete deployment rabbitmq-canary-b || true
+	kubectl delete deployment rabbitmq-featureflag || true
+	kubectl delete configmap rabbitmq-featureflag || true
 
 .PHONY: install-rabbitmq
 install-rabbitmq:
@@ -56,6 +59,12 @@ deploy-rabbitmq-canary: stop-rabbitmq
 	kubectl apply -f rabbitmq-deployment-canary-b.yaml
 	kubectl apply -f rabbitmq-services-canary.yaml
 	kubectl apply -f rabbitmq-ingress-canary.yaml
+
+.PHONY: deploy-rabbitmq-featureflag
+deploy-rabbitmq-featureflag: stop-rabbitmq
+	kubectl apply -f rabbitmq-configmap-featureflag.yaml
+	kubectl apply -f rabbitmq-deployment-featureflag.yaml
+	kubectl apply -f rabbitmq-services-featureflag.yaml
 
 .PHONY: run-rabbitmq
 run-rabbitmq:

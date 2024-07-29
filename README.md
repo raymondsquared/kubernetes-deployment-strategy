@@ -16,6 +16,7 @@ In this guide, we will explore various approaches to deploying applications on K
     - **Recreate** means completely stopping your old version of an application and then starting a new version from scratch. It’s like tearing down an old building and building a new one in its place. During this process, the application will be temporarily unavailable while the old version is replaced with the new one.
     - **Blue/Green** involves running two identical environments, Blue and Green. You deploy the new version to the Green environment, test it, and then switch user traffic from Blue to Green to ensure a smooth transition with minimal risk.
     - **Canary** is a method where you gradually release a new version of your application to a small portion of users before rolling it out to everyone. This helps test the new version in real conditions and minimize the risk of widespread issues.
+    - **Feature flag deployment** involves using settings or configurations to turn specific features on or off in your application without changing the code. This allows you to control which features are active in your app by adjusting settings in Kubernetes, making it easier to test and manage new features.
 
 ## 🧰 Prerequisites
 
@@ -44,6 +45,7 @@ make deploy-rabbitmq-recreate           # Deploy rabbitmq 4 with recreate strate
 make deploy-rabbitmq-blue               # Deploy rabbitmq 3 with blue/green strategy (blue)
 make deploy-rabbitmq-green              # Deploy rabbitmq 4 with blue/green strategy (green)
 make deploy-rabbitmq-canary             # Deploy rabbitmq 3 and 4 with canary strategy (50%)
+make deploy-rabbitmq-featureflag        # Deploy rabbitmq 3 and feature flag
 
 make run-rabbitmq                       # Portforward port 8080 to k8s service
 ```
