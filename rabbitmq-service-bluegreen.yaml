@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+    # Initially point to blue 
+    # Change to green after
+    deployment-group: blue
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 15672
+  type: LoadBalancer

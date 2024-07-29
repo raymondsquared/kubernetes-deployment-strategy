@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-blue
+  labels:
+    app: rabbitmq
+    deployment-group: blue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rabbitmq
+      deployment-group: blue
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        deployment-group: blue
+    spec:
+      containers:
+        - name: rabbitmq-3
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 15692
+            - containerPort: 15672
+            - containerPort: 5692
