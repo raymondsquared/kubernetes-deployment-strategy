@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-canary-a
+spec:
+  selector:
+    app: rabbitmq
+    deployment-group: canary-a
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 15672
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-canary-b
+spec:
+  selector:
+    app: rabbitmq
+    deployment-group: canary-b
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 15672
+  type: ClusterIP

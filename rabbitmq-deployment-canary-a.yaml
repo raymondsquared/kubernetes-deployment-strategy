@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-canary-a
+  labels:
+    app: rabbitmq
+    deployment-group: canary-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rabbitmq
+      deployment-group: canary-a
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        deployment-group: canary-a
+    spec:
+      containers:
+        - name: rabbitmq-3
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 15692
+            - containerPort: 15672
+            - containerPort: 5692

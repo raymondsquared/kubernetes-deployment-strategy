@@ -4,14 +4,24 @@ run-k8s:
 
 .PHONY: stop-rabbitmq
 stop-rabbitmq:
+	kubectl delete ingress rabbitmq-ingress || true
+	kubectl delete service rabbitmq || true
+	kubectl delete service rabbitmq-canary-a || true
+	kubectl delete service rabbitmq-canary-b || true
 	kubectl delete deployment rabbitmq || true
 	kubectl delete deployment rabbitmq-blue || true
 	kubectl delete deployment rabbitmq-green || true
+	kubectl delete deployment rabbitmq-canary-a || true
+	kubectl delete deployment rabbitmq-canary-b || true
 
 .PHONY: install-rabbitmq
 install-rabbitmq:
 	docker pull rabbitmq:3-management
 	docker pull rabbitmq:4.0.0-beta.3-management
+
+.PHONY: install-ingress
+install-ingress:
+	minikube addons enable ingress
 
 .PHONY: install
 install: install-rabbitmq
@@ -40,6 +50,14 @@ deploy-rabbitmq-green:
 	@export DEPLOYMENT_GROUP="green"; \
 		kubectl patch service rabbitmq -p "{\"spec\": {\"selector\": {\"deployment-group\": \"$$DEPLOYMENT_GROUP\"}}}"
 
+.PHONY: deploy-rabbitmq-canary
+deploy-rabbitmq-canary: stop-rabbitmq
+	kubectl apply -f rabbitmq-deployment-canary-a.yaml
+	kubectl apply -f rabbitmq-deployment-canary-b.yaml
+	kubectl apply -f rabbitmq-services-canary.yaml
+	kubectl apply -f rabbitmq-ingress-canary.yaml
+
 .PHONY: run-rabbitmq
 run-rabbitmq:
-	kubectl port-forward service/rabbitmq 8080:80
+	kubectl port-forward service/rabbitmq 8080:80 \
+	|| kubectl port-forward svc/ingress-nginx-controller 8080:80 -n ingress-nginx
