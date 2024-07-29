@@ -14,3 +14,7 @@ deploy-rabbitmq: install-rabbitmq
 .PHONY: deploy-rabbitmq-rollingupdate
 deploy-rabbitmq-rollingupdate:
 	kubectl apply -f rabbitmq-deployment-rollingupdate.yaml
+
+.PHONY: deploy-rabbitmq-recreate
+deploy-rabbitmq-recreate:
+	kubectl apply -f rabbitmq-deployment-recreate.yaml

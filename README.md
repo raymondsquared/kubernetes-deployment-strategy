@@ -11,9 +11,9 @@ In this guide, we will explore various approaches to deploying applications on K
 ## 🚀 Features
 
 - **Kubernetes**: Open source system for automating deployment, scaling, and management of containerized applications.
-
-### Deployment Strategies
-- A "Rolling Update" in Kubernetes is a way to update your application without causing downtime. Imagine you’re switching out parts of a machine while it’s still running. Instead of stopping the machine and replacing everything at once, you replace one part at a time. Similarly, Kubernetes updates your application one piece at a time, ensuring that it stays operational throughout the update process.
+  - Deployment Strategies
+    - **Rolling Update** is a way to update your application without causing downtime. Imagine you’re switching out parts of a machine while it’s still running. Instead of stopping the machine and replacing everything at once, you replace one part at a time. Similarly, Kubernetes updates your application one piece at a time, ensuring that it stays operational throughout the update process.
+    - **Recreate** means completely stopping your old version of an application and then starting a new version from scratch. It’s like tearing down an old building and building a new one in its place. During this process, the application will be temporarily unavailable while the old version is replaced with the new one.
 
 ## 🧰 Prerequisites
 
@@ -33,8 +33,9 @@ make install
 ```bash
 make install                            # Install dependencies
 make run-k8s                            # Start the kubernetes (minikube)
-make deploy-rabbitmq      # Deploy rabbitmq 3
+make deploy-rabbitmq                    # Deploy rabbitmq 3
 make deploy-rabbitmq-rollingupdate      # Deploy rabbitmq 4 with rolling update strategy
+make deploy-rabbitmq-recreate           # Deploy rabbitmq 4 with recreate strategy
 ```
 
 ## 🤝 Contributing
