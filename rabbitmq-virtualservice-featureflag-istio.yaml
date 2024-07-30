@@ -9,6 +9,26 @@ spec:
     - rabbitmq-gateway
   http:
     - match:
+        - headers:
+            featureflag-group:
+              exact: featureflag-a
+      route:
+        - destination:
+            host: rabbitmq
+            subset: featureflag-a
+            port:
+              number: 15672
+    - match:
+        - headers:
+            featureflag-group:
+              exact: featureflag-b
+      route:
+        - destination:
+            host: rabbitmq
+            subset: featureflag-b
+            port:
+              number: 15672
+    - match:
         - port: 8080
       route:
         - destination:
