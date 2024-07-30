@@ -1,25 +1,52 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rabbitmq-featureflag
+  name: rabbitmq-featureflag-a
   labels:
     app: rabbitmq
-    deployment-group: featureflag
+    deployment-group: featureflag-a
 spec:
   replicas: 2
   selector:
     matchLabels:
       app: rabbitmq
-      deployment-group: featureflag
+      deployment-group: featureflag-a
   template:
     metadata:
       labels:
         app: rabbitmq
-        deployment-group: featureflag
+        deployment-group: featureflag-a
     spec:
       containers:
         - name: rabbitmq-3
           image: rabbitmq:3-management
+          ports:
+            - containerPort: 15692
+            - containerPort: 15672
+            - containerPort: 5692
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-featureflag-b
+  labels:
+    app: rabbitmq
+    deployment-group: featureflag-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rabbitmq
+      deployment-group: featureflag-b
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+        deployment-group: featureflag-b
+    spec:
+      containers:
+        - name: rabbitmq-4
+          image: rabbitmq:4.0.0-beta.3-management
           ports:
             - containerPort: 15692
             - containerPort: 15672

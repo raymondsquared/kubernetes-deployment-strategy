@@ -11,13 +11,18 @@ stop-rabbitmq:
 	kubectl delete service rabbitmq-canary-a || true
 	kubectl delete service rabbitmq-canary-b || true
 	kubectl delete service rabbitmq-featureflag || true
+	kubectl delete service rabbitmq-featureflag-a || true
+	kubectl delete service rabbitmq-featureflag-b || true
 	kubectl delete deployment rabbitmq || true
 	kubectl delete deployment rabbitmq-blue || true
 	kubectl delete deployment rabbitmq-green || true
 	kubectl delete deployment rabbitmq-canary-a || true
 	kubectl delete deployment rabbitmq-canary-b || true
 	kubectl delete deployment rabbitmq-featureflag || true
+	kubectl delete deployment rabbitmq-featureflag-a || true
+	kubectl delete deployment rabbitmq-featureflag-b || true
 	kubectl delete configmap rabbitmq-featureflag || true
+	kubectl delete destinationrule rabbitmq || true
 
 .PHONY: install-rabbitmq
 install-rabbitmq:
@@ -76,8 +81,9 @@ deploy-rabbitmq-featureflag: stop-rabbitmq
 deploy-rabbitmq-featureflag-istio: stop-rabbitmq
 	kubectl apply -f rabbitmq-deployment-featureflag-istio.yaml
 	kubectl apply -f rabbitmq-services-featureflag-istio.yaml
-	kubectl apply -f rabbitmq-gateway-featureflag.yaml
-	kubectl apply -f rabbitmq-virtualservice-featureflag.yaml
+	kubectl apply -f rabbitmq-gateway-featureflag-istio.yaml
+	kubectl apply -f rabbitmq-destinationrule-featureflag-istio.yaml
+	kubectl apply -f rabbitmq-virtualservice-featureflag-istio.yaml
 
 .PHONY: run-rabbitmq
 run-rabbitmq:

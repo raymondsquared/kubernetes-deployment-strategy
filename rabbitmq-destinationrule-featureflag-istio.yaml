@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: rabbitmq
+spec:
+  host: rabbitmq
+  subsets:
+    - name: featureflag-a
+      labels:
+        deployment-group: featureflag-a
+    - name: featureflag-b
+      labels:
+        deployment-group: featureflag-b

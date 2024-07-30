@@ -9,10 +9,17 @@ spec:
     - rabbitmq-gateway
   http:
     - match:
-        - port: 80
         - port: 8080
       route:
         - destination:
             host: rabbitmq
+            subset: featureflag-a
             port:
               number: 15672
+          weight: 20
+        - destination:
+            host: rabbitmq
+            subset: featureflag-b
+            port:
+              number: 15672
+          weight: 80
