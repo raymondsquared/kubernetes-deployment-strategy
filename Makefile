@@ -1,9 +1,11 @@
 .PHONY: run-k8s
 run-k8s:
-	minikube start --driver=docker
+	minikube start --memory=8192mb --cpus=4 --driver=docker
 
 .PHONY: stop-rabbitmq
 stop-rabbitmq:
+	kubectl delete virtualservice rabbitmq || true
+	kubectl delete gateway rabbitmq-gateway || true
 	kubectl delete ingress rabbitmq-ingress || true
 	kubectl delete service rabbitmq || true
 	kubectl delete service rabbitmq-canary-a || true
@@ -26,8 +28,12 @@ install-rabbitmq:
 install-ingress:
 	minikube addons enable ingress
 
+.PHONY: install-istio
+install-istio:
+	kubectl label namespace default istio-injection=enabled
+
 .PHONY: install
-install: install-rabbitmq
+install: install-rabbitmq install-ingress install-istio
 
 .PHONY: deploy-rabbitmq
 deploy-rabbitmq: stop-rabbitmq
@@ -65,6 +71,13 @@ deploy-rabbitmq-featureflag: stop-rabbitmq
 	kubectl apply -f rabbitmq-configmap-featureflag.yaml
 	kubectl apply -f rabbitmq-deployment-featureflag.yaml
 	kubectl apply -f rabbitmq-services-featureflag.yaml
+
+.PHONY: deploy-rabbitmq-featureflag-istio
+deploy-rabbitmq-featureflag-istio: stop-rabbitmq
+	kubectl apply -f rabbitmq-deployment-featureflag-istio.yaml
+	kubectl apply -f rabbitmq-services-featureflag-istio.yaml
+	kubectl apply -f rabbitmq-gateway-featureflag.yaml
+	kubectl apply -f rabbitmq-virtualservice-featureflag.yaml
 
 .PHONY: run-rabbitmq
 run-rabbitmq:

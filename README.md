@@ -52,6 +52,14 @@ make run-rabbitmq                       # Portforward port 8080 to k8s service
 
 after `make run-rabbitmq`, open `http://0.0.0.0:8080` in your web browser to access the UI.
 
+#### To access app directly via Istio Gateway
+
+```bash
+make deploy-rabbitmq-featureflag-istio  # Deploy rabbitmq 3, 4 and feature flag with Istio
+minikube tunnel                         # Open tunnel
+http://127.0.0.1/                       # Access the UI
+```
+
 ## 🤝 Contributing
 
 We welcome contributions to Kubernetes Deployment Strategy! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and suggest improvements.
